@@ -257,3 +257,53 @@
     flex-wrap: wrap;
   }
 }
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.delete-btn {
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.65);
+  color: #B42318;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.delete-btn:hover {
+  background: #FEE4E2;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 65px 20px;
+  border: 1px dashed #D5D0E8;
+  border-radius: 16px;
+  background: #FFFFFF;
+}
+
+.empty-state h3 {
+  color: #25243A;
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+
+.empty-state p {
+  color: #626176;
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .note-footer {
+    flex-wrap: wrap;
+  }
+
+  .note-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

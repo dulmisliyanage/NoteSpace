@@ -1,10 +1,14 @@
-function SearchBar() {
+function SearchBar({ searchTerm, onSearchChange }) {
   return (
     <div className="search-container">
       <input
-        type="text"
+        type="search"
         placeholder="Search your notes..."
         aria-label="Search notes"
+        value={searchTerm}
+        onChange={(event) =>
+          onSearchChange(event.target.value)
+        }
       />
     </div>
   );

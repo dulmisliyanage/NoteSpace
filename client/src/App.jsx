@@ -41,6 +41,7 @@ function App() {
   const [notes, setNotes] = useState(initialNotes);
   const [showForm, setShowForm] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   function handleNewNote() {
     setEditingNote(null);
@@ -84,6 +85,24 @@ function App() {
     setEditingNote(null);
   }
 
+  function handleDeleteNote(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this note?"
+    );
+
+    if (confirmed) {
+      setNotes((previousNotes) =>
+        previousNotes.filter((note) => note.id !== id)
+      );
+    }
+  }
+
+  const filteredNotes = notes.filter((note) =>
+    note.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase().trim())
+  );
+
   return (
     <div className="app-container">
       <Header onNewNote={handleNewNote} />
@@ -103,23 +122,47 @@ function App() {
           />
         ) : (
           <>
-            <SearchBar />
+            <SearchBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+            />
 
             <section className="notes-section">
               <div className="section-heading">
                 <h2>All Notes</h2>
-                <span>{notes.length} notes</span>
+                <span>
+                  {searchTerm.trim()
+                    ? `${filteredNotes.length} results`
+                    : `${notes.length} notes`}
+                </span>
               </div>
 
-              <div className="notes-grid">
-                {notes.map((note) => (
-                  <NoteCard
-                    key={note.id}
-                    note={note}
-                    onEdit={handleEditNote}
-                  />
-                ))}
-              </div>
+              {filteredNotes.length > 0 ? (
+                <div className="notes-grid">
+                  {filteredNotes.map((note) => (
+                    <NoteCard
+                      key={note.id}
+                      note={note}
+                      onEdit={handleEditNote}
+                      onDelete={handleDeleteNote}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="empty-state">
+                  <h3>
+                    {searchTerm.trim()
+                      ? "No matching notes found"
+                      : "No notes yet"}
+                  </h3>
+
+                  <p>
+                    {searchTerm.trim()
+                      ? "Try searching with a different title."
+                      : "Click New Note to create your first note."}
+                  </p>
+                </div>
+              )}
             </section>
           </>
         )}
