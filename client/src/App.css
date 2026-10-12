@@ -164,3 +164,96 @@
     font-size: 12px;
   }
 }
+
+.note-form {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  padding: 30px;
+  background: #FFFFFF;
+  border: 1px solid #E7E5EF;
+  border-radius: 16px;
+}
+
+.note-form h2 {
+  margin: 0 0 25px;
+  font-size: 24px;
+}
+
+.note-form label {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.note-form input,
+.note-form textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #E7E5EF;
+  border-radius: 10px;
+  background: #F8F7FC;
+  color: #25243A;
+  font-size: 14px;
+}
+
+.note-form textarea {
+  resize: vertical;
+}
+
+.note-form input:focus,
+.note-form textarea:focus {
+  outline: 2px solid #6D5CE7;
+  outline-offset: 1px;
+}
+
+.form-error {
+  color: #B42318;
+  font-size: 13px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-btn {
+  background: #FFFFFF;
+  border: 1px solid #E7E5EF;
+  border-radius: 10px;
+  padding: 12px 20px;
+  color: #25243A;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.edit-btn {
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.65);
+  color: #25243A;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.edit-btn:hover {
+  background: #FFFFFF;
+}
+
+@media (max-width: 520px) {
+  .note-form {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-wrap: wrap;
+  }
+}

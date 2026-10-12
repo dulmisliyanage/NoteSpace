@@ -1,4 +1,4 @@
-function Header() {
+function Header({ onNewNote }) {
   return (
     <header className="header">
       <div className="brand">
@@ -6,7 +6,7 @@ function Header() {
         <h1>NoteSpace.</h1>
       </div>
 
-      <button className="new-note-btn">
+      <button className="new-note-btn" onClick={onNewNote}>
         + New Note
       </button>
     </header>

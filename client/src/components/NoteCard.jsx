@@ -1,12 +1,21 @@
-function NoteCard({ title, content, date, color }) {
+function NoteCard({ note, onEdit }) {
   return (
     <article
       className="note-card"
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: note.color }}
     >
-      <h3>{title}</h3>
-      <p>{content}</p>
-      <span className="note-date">{date}</span>
+      <h3>{note.title}</h3>
+      <p>{note.content}</p>
+
+      <div className="note-footer">
+        <span className="note-date">{note.date}</span>
+        <button
+          className="edit-btn"
+          onClick={() => onEdit(note)}
+        >
+          Edit
+        </button>
+      </div>
     </article>
   );
 }
