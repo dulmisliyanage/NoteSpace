@@ -9,6 +9,7 @@ const noteColors = [
 function NoteCard({
   note,
   index,
+  onView,
   onEdit,
   onDelete,
   deletingId,
@@ -33,6 +34,14 @@ function NoteCard({
         <span className="note-date">{formattedDate}</span>
 
         <div className="note-actions">
+          <button
+            type="button"
+            className="view-btn"
+            onClick={() => onView(note)}
+          >
+            View
+          </button>
+
           <button
             className="edit-btn"
             onClick={() => onEdit(note)}

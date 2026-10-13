@@ -389,3 +389,113 @@ textarea:focus-visible {
     transform: none;
   }
 }
+
+/* Full note view */
+
+.note-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(28, 24, 49, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.note-modal {
+  background: #F8F7FC;
+  width: 100%;
+  max-width: 650px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(28, 24, 49, 0.2);
+  font-family: "Lora", serif;
+}
+
+.note-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.note-modal-header h2 {
+  font-size: 26px;
+  color: #25243A;
+  overflow-wrap: anywhere;
+}
+
+.note-modal-close {
+  background: transparent;
+  border: none;
+  color: #55516B;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.note-modal-date {
+  color: #77728E;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.note-modal-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+  color: #37334B;
+  margin: 28px 0;
+  font-size: 15px;
+}
+
+.note-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.note-modal-primary,
+.note-modal-secondary {
+  padding: 11px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: "Lora", serif;
+}
+
+.note-modal-primary {
+  background: #6D5CE7;
+  color: white;
+}
+
+.note-modal-secondary {
+  background: #E9E5FF;
+  color: #37334B;
+}
+
+.view-btn {
+  background: transparent;
+  border: none;
+  color: #5948D0;
+  cursor: pointer;
+  font-family: "Lora", serif;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .note-modal {
+    padding: 22px;
+    max-height: 90vh;
+  }
+
+  .note-modal-header h2 {
+    font-size: 21px;
+  }
+
+  .note-modal-actions {
+    flex-wrap: wrap;
+  }
+}

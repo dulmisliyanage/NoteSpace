@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import NoteCard from "./components/NoteCard";
 import NoteForm from "./components/NoteForm";
+import NoteView from "./components/NoteView";
 import {
   getNotes,
   createNote,
@@ -16,6 +17,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
+  const [viewingNote, setViewingNote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -43,11 +45,21 @@ function App() {
 
   function handleNewNote() {
     setEditingNote(null);
+    setViewingNote(null);
     setActionError("");
     setShowForm(true);
   }
 
+  function handleViewNote(note) {
+    setViewingNote(note);
+  }
+
+  function handleCloseView() {
+    setViewingNote(null);
+  }
+
   function handleEditNote(note) {
+    setViewingNote(null);
     setEditingNote(note);
     setActionError("");
     setShowForm(true);
@@ -104,6 +116,10 @@ function App() {
       setNotes((previousNotes) =>
         previousNotes.filter((note) => note._id !== id)
       );
+
+      if (viewingNote?._id === id) {
+        setViewingNote(null);
+      }
     } catch (err) {
       setActionError(err.message);
     } finally {
@@ -191,6 +207,7 @@ function App() {
                       key={note._id}
                       note={note}
                       index={index}
+                      onView={handleViewNote}
                       onEdit={handleEditNote}
                       onDelete={handleDeleteNote}
                       deletingId={deletingId}
@@ -216,6 +233,14 @@ function App() {
           </>
         )}
       </main>
+
+      {viewingNote && (
+        <NoteView
+          note={viewingNote}
+          onClose={handleCloseView}
+          onEdit={handleEditNote}
+        />
+      )}
     </div>
   );
 }
