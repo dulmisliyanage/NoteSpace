@@ -1,14 +1,30 @@
-function NoteCard({ note, onEdit, onDelete }) {
+const noteColors = [
+  "#E9E5FF",
+  "#FFF1D6",
+  "#E6F4EA",
+  "#E8F0FF",
+  "#FCE8F1",
+];
+
+function NoteCard({ note, index, onEdit, onDelete }) {
+  const formattedDate = new Date(note.createdAt).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  const backgroundColor = noteColors[index % noteColors.length];
+
   return (
     <article
       className="note-card"
-      style={{ backgroundColor: note.color }}
+      style={{ backgroundColor }}
     >
       <h3>{note.title}</h3>
       <p>{note.content}</p>
 
       <div className="note-footer">
-        <span className="note-date">{note.date}</span>
+        <span className="note-date">{formattedDate}</span>
 
         <div className="note-actions">
           <button
@@ -20,7 +36,7 @@ function NoteCard({ note, onEdit, onDelete }) {
 
           <button
             className="delete-btn"
-            onClick={() => onDelete(note.id)}
+            onClick={() => onDelete(note._id)}
           >
             Delete
           </button>
