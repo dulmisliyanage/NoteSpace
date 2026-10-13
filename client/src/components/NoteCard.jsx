@@ -6,7 +6,13 @@ const noteColors = [
   "#FCE8F1",
 ];
 
-function NoteCard({ note, index, onEdit, onDelete }) {
+function NoteCard({
+  note,
+  index,
+  onEdit,
+  onDelete,
+  deletingId,
+}) {
   const formattedDate = new Date(note.createdAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -37,8 +43,9 @@ function NoteCard({ note, index, onEdit, onDelete }) {
           <button
             className="delete-btn"
             onClick={() => onDelete(note._id)}
+            disabled={deletingId !== null}
           >
-            Delete
+            {deletingId === note._id ? "Deleting..." : "Delete"}
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import NoteCard from "./components/NoteCard";
@@ -18,39 +18,44 @@ function App() {
   const [editingNote, setEditingNote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
 
   // Load notes when the application starts
-  useEffect(() => {
-    async function loadNotes() {
-      try {
-        const data = await getNotes();
-        setNotes(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const loadNotes = useCallback(async () => {
+    setLoading(true);
+    setLoadError("");
 
-    loadNotes();
+    try {
+      const data = await getNotes();
+      setNotes(data);
+    } catch (err) {
+      setLoadError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadNotes();
+  }, [loadNotes]);
 
   function handleNewNote() {
     setEditingNote(null);
-    setError("");
+    setActionError("");
     setShowForm(true);
   }
 
   function handleEditNote(note) {
     setEditingNote(note);
-    setError("");
+    setActionError("");
     setShowForm(true);
   }
 
   async function handleSaveNote(noteData) {
     setSaving(true);
-    setError("");
+    setActionError("");
 
     try {
       if (editingNote) {
@@ -75,35 +80,41 @@ function App() {
       setShowForm(false);
       setEditingNote(null);
     } catch (err) {
-      setError(err.message);
+      setActionError(err.message);
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDeleteNote(id) {
+    if (deletingId !== null) return;
+
     const confirmed = window.confirm(
       "Are you sure you want to delete this note?"
     );
 
     if (!confirmed) return;
 
-    setError("");
+    setDeletingId(id);
+    setActionError("");
 
     try {
       await deleteNote(id);
+
       setNotes((previousNotes) =>
         previousNotes.filter((note) => note._id !== id)
       );
     } catch (err) {
-      setError(err.message);
+      setActionError(err.message);
+    } finally {
+      setDeletingId(null);
     }
   }
 
   function handleCancel() {
     setShowForm(false);
     setEditingNote(null);
-    setError("");
+    setActionError("");
   }
 
   const filteredNotes = notes.filter((note) =>
@@ -122,9 +133,9 @@ function App() {
           <p>A little space for your big ideas.</p>
         </section>
 
-        {error && (
+        {actionError && (
           <div className="api-error" role="alert">
-            {error}
+            {actionError}
           </div>
         )}
 
@@ -161,9 +172,17 @@ function App() {
                 <div className="empty-state">
                   <p>Loading your notes...</p>
                 </div>
-              ) : error ? (
-                <div className="empty-state">
-                  <p>Unable to load your notes. Please try again.</p>
+              ) : loadError ? (
+                <div className="empty-state" role="alert">
+                  <h3>Couldn't load your notes</h3>
+                  <p>{loadError}</p>
+
+                  <button
+                    className="retry-btn"
+                    onClick={loadNotes}
+                  >
+                    Try Again
+                  </button>
                 </div>
               ) : filteredNotes.length > 0 ? (
                 <div className="notes-grid">
@@ -174,6 +193,7 @@ function App() {
                       index={index}
                       onEdit={handleEditNote}
                       onDelete={handleDeleteNote}
+                      deletingId={deletingId}
                     />
                   ))}
                 </div>

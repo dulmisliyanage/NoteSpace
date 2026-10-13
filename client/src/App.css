@@ -329,3 +329,63 @@
   opacity: 0.65;
   cursor: wait;
 }
+
+/* Retry button */
+.retry-btn {
+  margin-top: 20px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #6D5CE7;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.retry-btn:hover {
+  background: #5948D0;
+}
+
+/* Note card improvements */
+.note-card {
+  overflow: hidden;
+  border: 1px solid rgba(37, 36, 58, 0.05);
+}
+
+.note-card h3 {
+  overflow-wrap: anywhere;
+}
+
+.note-card p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+/* Disabled buttons */
+.delete-btn:disabled,
+.new-note-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Keyboard accessibility */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #6D5CE7;
+  outline-offset: 3px;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .note-card {
+    transition: none;
+  }
+
+  .note-card:hover {
+    transform: none;
+  }
+}
