@@ -4,6 +4,7 @@ import SearchBar from "./components/SearchBar";
 import NoteCard from "./components/NoteCard";
 import NoteForm from "./components/NoteForm";
 import NoteView from "./components/NoteView";
+import Hero from "./components/Hero";
 import {
   getNotes,
   createNote,
@@ -144,10 +145,7 @@ function App() {
       <Header onNewNote={handleNewNote} />
 
       <main>
-        <section className="welcome-section">
-          <h2>Your thoughts, organized.</h2>
-          <p>A little space for your big ideas.</p>
-        </section>
+        <Hero />
 
         {actionError && (
           <div className="api-error" role="alert">

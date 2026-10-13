@@ -499,3 +499,32 @@ textarea:focus-visible {
     flex-wrap: wrap;
   }
 }
+
+/* Hero section */
+.hero {
+  background: transparent;
+  text-align: center;
+  padding: 30px 20px 50px;
+}
+
+.hero h1 {
+  font-size: 34px;
+  margin: 0 0 12px;
+  color: #25243A;
+}
+
+.hero p {
+  color: #626176;
+  font-size: 16px;
+  margin: 0;
+}
+
+.hero-illustration {
+  display: block;
+  width: 100%;
+  max-width: 650px;
+  height: auto;
+  margin: 35px auto 0;
+  filter: drop-shadow(0 12px 24px rgba(109, 92, 231, 0.08));
+}
+
