@@ -1,19 +1,23 @@
 require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
+const noteRoutes = require("./routes/noteRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware to read JSON data
 app.use(express.json());
 
-// Test API endpoint
+// Test endpoint
 app.get("/api", (req, res) => {
-  res.json({ message: "Welcome to NoteSpace API!" });
+  res.json({
+    message: "Welcome to NoteSpace API!",
+  });
 });
 
-// Connect to MongoDB before starting server
+// Notes API routes
+app.use("/api/notes", noteRoutes);
+
 async function startServer() {
   await connectDB();
   app.listen(PORT, () => {
