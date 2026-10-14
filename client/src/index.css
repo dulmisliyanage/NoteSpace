@@ -1,13 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
+/* ─── Design tokens ─────────────────────────────────────────── */
 :root {
+  /* Brand */
+  --color-brand:        #6D5CE7;
+  --color-brand-hover:  #5948D0;
+  --color-brand-light:  #EAE7FD;
+
+  /* Surfaces */
+  --color-bg:           #F8F7FC;
+  --color-surface:      #FFFFFF;
+  --color-border:       #E3E0EF;
+  --color-border-light: #EEECf6;
+
+  /* Text */
+  --color-text:         #25243A;
+  --color-text-muted:   #6B6882;
+  --color-text-subtle:  #9794AD;
+
+  /* Feedback */
+  --color-error:        #C0392B;
+  --color-error-bg:     #FEF2F2;
+  --color-error-border: #FECACA;
+
+  /* Radii — tighter = more professional */
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+
+  /* Spacing */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Typography */
   font-family: 'Lora', Georgia, serif;
-  color: #25243A;
-  background-color: #F8F7FC;
+  color: var(--color-text);
+  background-color: var(--color-bg);
   font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-* {
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -24,4 +65,12 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+/* ─── Focus ring — applied via :focus-visible only ─────────── */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
 }

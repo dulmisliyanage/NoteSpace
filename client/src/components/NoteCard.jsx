@@ -1,9 +1,10 @@
-const noteColors = [
-  "#E9E5FF",
-  "#FFF1D6",
-  "#E6F4EA",
-  "#E8F0FF",
-  "#FCE8F1",
+// Muted, professional accent colours used only as the 3px top border stripe
+const CARD_ACCENTS = [
+  "#6D5CE7", // lavender
+  "#E89B4F", // amber
+  "#3DA96B", // sage
+  "#4B90D9", // steel blue
+  "#C76DA3", // mauve
 ];
 
 function NoteCard({
@@ -14,18 +15,19 @@ function NoteCard({
   onDelete,
   deletingId,
 }) {
-  const formattedDate = new Date(note.createdAt).toLocaleDateString("en-US", {
+  const formattedDate = new Date(note.updatedAt || note.createdAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
 
-  const backgroundColor = noteColors[index % noteColors.length];
+  const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
+  const isDeleting = deletingId === note._id;
 
   return (
     <article
       className="note-card"
-      style={{ backgroundColor }}
+      style={{ "--card-accent": accent }}
     >
       <h3>{note.title}</h3>
       <p>{note.content}</p>
@@ -36,25 +38,33 @@ function NoteCard({
         <div className="note-actions">
           <button
             type="button"
+            id={`view-${note._id}`}
             className="view-btn"
             onClick={() => onView(note)}
+            aria-label={`View note: ${note.title}`}
           >
             View
           </button>
 
           <button
+            type="button"
+            id={`edit-${note._id}`}
             className="edit-btn"
             onClick={() => onEdit(note)}
+            aria-label={`Edit note: ${note.title}`}
           >
             Edit
           </button>
 
           <button
+            type="button"
+            id={`delete-${note._id}`}
             className="delete-btn"
             onClick={() => onDelete(note._id)}
             disabled={deletingId !== null}
+            aria-label={`Delete note: ${note.title}`}
           >
-            {deletingId === note._id ? "Deleting..." : "Delete"}
+            {isDeleting ? "…" : "Delete"}
           </button>
         </div>
       </div>

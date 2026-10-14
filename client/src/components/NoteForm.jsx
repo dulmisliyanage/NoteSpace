@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+const TITLE_MAX = 100;
+const CONTENT_MAX = 5000;
+
 function NoteForm({ onSave, onCancel, initialNote }) {
   const [title, setTitle] = useState(initialNote?.title || "");
   const [content, setContent] = useState(initialNote?.content || "");
@@ -9,53 +12,96 @@ function NoteForm({ onSave, onCancel, initialNote }) {
     event.preventDefault();
 
     if (!title.trim() || !content.trim()) {
-      setError("Title and content are required.");
+      setError("Both title and content are required.");
       return;
     }
 
-    if (title.trim().length > 100 || content.trim().length > 5000) {
-      setError("Title or content is too long.");
+    if (title.trim().length > TITLE_MAX || content.trim().length > CONTENT_MAX) {
+      setError("Title or content exceeds the maximum allowed length.");
       return;
     }
 
+    setError("");
     onSave({
       title: title.trim(),
       content: content.trim(),
     });
   }
 
+  const isEditing = Boolean(initialNote);
+
   return (
-    <form className="note-form" onSubmit={handleSubmit}>
-      <h2>{initialNote ? "Edit Note" : "Create a Note"}</h2>
+    <form
+      id="note-form"
+      className="note-form"
+      onSubmit={handleSubmit}
+      noValidate
+    >
+      <h2>{isEditing ? "Edit Note" : "New Note"}</h2>
 
-      <label htmlFor="note-title">Note Title</label>
-      <input
-        id="note-title"
-        type="text"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        maxLength={100}
-        placeholder="Enter your note title..."
-      />
+      <div className="form-field">
+        <label htmlFor="note-title">Title</label>
+        <input
+          id="note-title"
+          type="text"
+          value={title}
+          onChange={(event) => {
+            setTitle(event.target.value);
+            if (error) setError("");
+          }}
+          maxLength={TITLE_MAX}
+          placeholder="Give your note a title…"
+          autoFocus
+          aria-required="true"
+          aria-describedby={error ? "form-error-msg" : undefined}
+        />
+        <div className="form-hint">
+          <span className="char-count">{title.length} / {TITLE_MAX}</span>
+        </div>
+      </div>
 
-      <label htmlFor="note-content">Content</label>
-      <textarea
-        id="note-content"
-        value={content}
-        onChange={(event) => setContent(event.target.value)}
-        maxLength={5000}
-        placeholder="Write your thoughts here..."
-        rows={6}
-      />
+      <div className="form-field">
+        <label htmlFor="note-content">Content</label>
+        <textarea
+          id="note-content"
+          value={content}
+          onChange={(event) => {
+            setContent(event.target.value);
+            if (error) setError("");
+          }}
+          maxLength={CONTENT_MAX}
+          placeholder="Write your thoughts here…"
+          rows={8}
+          aria-required="true"
+          aria-describedby={error ? "form-error-msg" : undefined}
+        />
+        <div className="form-hint">
+          <span className="char-count">{content.length} / {CONTENT_MAX}</span>
+        </div>
+      </div>
 
-      {error && <p className="form-error">{error}</p>}
+      {error && (
+        <p id="form-error-msg" className="form-error" role="alert">
+          {error}
+        </p>
+      )}
 
       <div className="form-actions">
-        <button type="button" className="cancel-btn" onClick={onCancel}>
+        <button
+          type="button"
+          id="cancel-note-btn"
+          className="cancel-btn"
+          onClick={onCancel}
+        >
           Cancel
         </button>
-        <button type="submit" className="new-note-btn">
-          {initialNote ? "Save Changes" : "Save Note"}
+
+        <button
+          type="submit"
+          id="save-note-btn"
+          className="new-note-btn"
+        >
+          {isEditing ? "Save Changes" : "Save Note"}
         </button>
       </div>
     </form>

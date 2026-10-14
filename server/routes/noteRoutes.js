@@ -10,6 +10,7 @@ router.get("/", async (req, res) => {
     const notes = await Note.find().sort({ createdAt: -1 });
     res.json(notes);
   } catch (error) {
+    console.error("GET /api/notes error:", error.message);
     res.status(500).json({ message: "Failed to fetch notes" });
   }
 });

@@ -1,16 +1,9 @@
-import heroIllustration from "../assets/notespace-hero.png";
-
 function Hero() {
   return (
-    <section className="hero">
+    <section className="hero" aria-label="Welcome">
+      <span className="hero-label">Personal Notes</span>
       <h1>Your ideas deserve a space.</h1>
-      <p>Capture your thoughts and keep your notes organized.</p>
-
-      <img
-        src={heroIllustration}
-        alt="Illustration of a student organizing notes"
-        className="hero-illustration"
-      />
+      <p>Capture your thoughts, stay organized, and find anything instantly.</p>
     </section>
   );
 }

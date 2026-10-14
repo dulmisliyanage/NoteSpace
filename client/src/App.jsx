@@ -25,7 +25,7 @@ function App() {
   const [actionError, setActionError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
 
-  // Load notes when the application starts
+  // ── Data fetching ──────────────────────────────────────────────
   const loadNotes = useCallback(async () => {
     setLoading(true);
     setLoadError("");
@@ -44,6 +44,7 @@ function App() {
     loadNotes();
   }, [loadNotes]);
 
+  // ── Handlers ───────────────────────────────────────────────────
   function handleNewNote() {
     setEditingNote(null);
     setViewingNote(null);
@@ -72,22 +73,13 @@ function App() {
 
     try {
       if (editingNote) {
-        const updatedNote = await updateNote(
-          editingNote._id,
-          noteData
-        );
-
-        setNotes((previousNotes) =>
-          previousNotes.map((note) =>
-            note._id === updatedNote._id ? updatedNote : note
-          )
+        const updatedNote = await updateNote(editingNote._id, noteData);
+        setNotes((prev) =>
+          prev.map((n) => (n._id === updatedNote._id ? updatedNote : n))
         );
       } else {
         const newNote = await createNote(noteData);
-        setNotes((previousNotes) => [
-          newNote,
-          ...previousNotes,
-        ]);
+        setNotes((prev) => [newNote, ...prev]);
       }
 
       setShowForm(false);
@@ -105,7 +97,6 @@ function App() {
     const confirmed = window.confirm(
       "Are you sure you want to delete this note?"
     );
-
     if (!confirmed) return;
 
     setDeletingId(id);
@@ -113,10 +104,7 @@ function App() {
 
     try {
       await deleteNote(id);
-
-      setNotes((previousNotes) =>
-        previousNotes.filter((note) => note._id !== id)
-      );
+      setNotes((prev) => prev.filter((n) => n._id !== id));
 
       if (viewingNote?._id === id) {
         setViewingNote(null);
@@ -134,30 +122,35 @@ function App() {
     setActionError("");
   }
 
+  // ── Derived state ──────────────────────────────────────────────
   const filteredNotes = notes.filter((note) =>
-    note.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase().trim())
+    note.title.toLowerCase().includes(searchTerm.toLowerCase().trim())
   );
 
+  const isSearching = searchTerm.trim().length > 0;
+  const countLabel = isSearching
+    ? `${filteredNotes.length} result${filteredNotes.length !== 1 ? "s" : ""}`
+    : `${notes.length} note${notes.length !== 1 ? "s" : ""}`;
+
+  // ── Render ─────────────────────────────────────────────────────
   return (
     <div className="app-container">
       <Header onNewNote={handleNewNote} />
 
       <main>
-        <Hero />
+        {/* Landing hero — visible only when not editing */}
+        {!showForm && <Hero />}
 
+        {/* Action-level error */}
         {actionError && (
           <div className="api-error" role="alert">
             {actionError}
           </div>
         )}
 
+        {/* Form view */}
         {showForm ? (
-          <fieldset
-            className="form-fieldset"
-            disabled={saving}
-          >
+          <fieldset className="form-fieldset" disabled={saving}>
             <NoteForm
               key={editingNote?._id ?? "new"}
               initialNote={editingNote}
@@ -167,37 +160,43 @@ function App() {
           </fieldset>
         ) : (
           <>
+            {/* Search */}
             <SearchBar
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
             />
 
-            <section className="notes-section">
+            {/* Notes section */}
+            <section className="notes-section" aria-label="Your notes">
               <div className="section-heading">
                 <h2>All Notes</h2>
-                <span>
-                  {searchTerm.trim()
-                    ? `${filteredNotes.length} results`
-                    : `${notes.length} notes`}
-                </span>
+                {!loading && !loadError && (
+                  <span>{countLabel}</span>
+                )}
               </div>
 
+              {/* Loading state */}
               {loading ? (
                 <div className="empty-state">
-                  <p>Loading your notes...</p>
+                  <p className="loading-text">Loading your notes…</p>
                 </div>
+
+              /* Load error state */
               ) : loadError ? (
                 <div className="empty-state" role="alert">
-                  <h3>Couldn't load your notes</h3>
+                  <div className="empty-icon" aria-hidden="true">⚠</div>
+                  <h3>Couldn&apos;t load your notes</h3>
                   <p>{loadError}</p>
-
                   <button
+                    id="retry-btn"
                     className="retry-btn"
                     onClick={loadNotes}
                   >
                     Try Again
                   </button>
                 </div>
+
+              /* Notes grid */
               ) : filteredNotes.length > 0 ? (
                 <div className="notes-grid">
                   {filteredNotes.map((note, index) => (
@@ -212,18 +211,22 @@ function App() {
                     />
                   ))}
                 </div>
+
+              /* Empty state */
               ) : (
                 <div className="empty-state">
+                  <div className="empty-icon" aria-hidden="true">
+                    {isSearching ? "🔍" : "📝"}
+                  </div>
                   <h3>
-                    {searchTerm.trim()
-                      ? "No matching notes found"
+                    {isSearching
+                      ? "No matching notes"
                       : "No notes yet"}
                   </h3>
-
                   <p>
-                    {searchTerm.trim()
-                      ? "Try searching with a different title."
-                      : "Click New Note to create your first note."}
+                    {isSearching
+                      ? "Try a different search term."
+                      : "Click New Note above to create your first note."}
                   </p>
                 </div>
               )}
@@ -232,6 +235,7 @@ function App() {
         )}
       </main>
 
+      {/* Note view modal */}
       {viewingNote && (
         <NoteView
           note={viewingNote}
