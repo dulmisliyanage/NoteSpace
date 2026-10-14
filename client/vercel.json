@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://notespace-3jez.onrender.com/api/:path*"
+    }
+  ]
+}
