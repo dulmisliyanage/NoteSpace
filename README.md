@@ -6,6 +6,17 @@ NoteSpace allows users to create, organize, search, edit, delete, and view perso
 
 ---
 
+## Live Demo
+
+- **Live Application**: [https://note-space-red.vercel.app](https://note-space-red.vercel.app)
+- **Source Code**: [https://github.com/dulmisliyanage/NoteSpace](https://github.com/dulmisliyanage/NoteSpace)
+
+NoteSpace is deployed using Vercel for the React frontend, Render for the Express backend, and MongoDB Atlas for database storage.
+
+> **Demo Notice**: This is a public demonstration application. Please use sample notes only and avoid entering sensitive or personal information.
+
+---
+
 ## Screenshots
 
 ### Dashboard
